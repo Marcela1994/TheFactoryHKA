@@ -5,17 +5,11 @@
  */
 package controll;
 
-import Model.md_categoria;
-import Model.md_producto;
 import Model.md_proveedor;
-import dao.dao_categorias;
-import dao.dao_productos;
 import dao.dao_proveedores;
 import java.io.IOException;
 import java.io.PrintWriter;
-import static java.lang.System.out;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -28,8 +22,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Lenovo
  */
-@WebServlet(name = "crear_produc", urlPatterns = {"/crear_produc"})
-public class ct_crear_produc extends HttpServlet {
+@WebServlet(name = "ct_crear_prov", urlPatterns = {"/ct_crear_prov"})
+public class ct_crear_prov extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,62 +42,22 @@ public class ct_crear_produc extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Crear Producto</title>"); 
+            out.println("<title>Crear Proveedor</title>"); 
             out.println("<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'>");
             out.println("</head>");
             out.println("<body class='container'>");
             out.println("<form method='post'>");
             out.println("<h1>Crear Producto</h1><BR><br>");
             out.println("<div class='form-group'>");
-            out.println("<label>NOMBRE DEL PRODUCTO</label>");
-            out.println("<input type='text' class='form-control' id='name' name='name' placeholder='Nombre del Producto' required='true'>");
+            out.println("<label>NIT DEL PROVEEDOR</label>");
+            out.println("<input type='text' class='form-control' id='nitPro' name='nitPro' placeholder='Ingrese el Nit del proveedor sin digito de verificación' required='true'>");
             out.println("</div>");
             out.println("<div class='form-group'>");
-            out.println("<label>DESCRIPCIÓN</label>");
-            out.println("<input type='text' class='form-control' id='descripcion' name='descripcion' placeholder='Descripción del producto' required='true'>");
-            out.println("</div>");
-            out.println("<div class='form-group'>");
-            out.println("<label for='exampleFormControlSelect1'>CATEGORIA</label>");
-            out.println("<select class='form-control' id='categoria' name='categoria'>");
-            //aca van las categorias traidas de la bd
-            dao_categorias categorias = new dao_categorias();
-            ArrayList<md_categoria> listadoCategorias = categorias.listarCategorias();
-            for (md_categoria cat : listadoCategorias) {
-                out.println("<option value='"+cat.getId_categoria()+"'>"+ cat.getCategoria() +"</option>");   
-            }
-            out.println("</select>");
-            out.println("</div>");
-            out.println("<div class='form-group'>");
-            out.println("<label for='exampleFormControlSelect1'>PROVEEDOR</label>");
-            out.println("<select class='form-control' id='proveedor' name='proveedor'>");
-            //aca van los proveedores traidos desde la bd
-            dao_proveedores proveedores = new dao_proveedores();
-            ArrayList<md_proveedor> listadoProveedores = proveedores.listarProveedores();
-            for (md_proveedor prov : listadoProveedores) {
-                out.println("<option value='"+prov.getNit()+"'>"+ prov.getNombre_empresa() +"</option>");   
-            }
-            out.println("</select>");
-            out.println("</div>");
-            out.println("<div class='form-group'>");
-            out.println("<label for='exampleInputEmail1'>PRECIO UNITARIO</label>");
-            out.println("<input type='text' class='form-control' id='pre_uni' name='pre_uni' placeholder='Precio Unitario' required='true'>");
-            out.println("</div>");
-            out.println("<div class='form-group'>");
-            out.println("<label for='exampleFormControlSelect1'>TASA DE INTERES</label>");
-            out.println("<select class='form-control' id='tasa_iva' name='tasa_iva'>");
-            out.println("<option>0%</option>");
-            out.println("<option>12%</option>");
-            out.println("<option>8%</option>");
-            out.println("<option>22%</option>");
-            out.println("</select>");
-            out.println("</div>");
-            out.println("<div class='form-group'>");
-            out.println("<label for='exampleInputEmail1'>CANTIDAD EN INVENTARIO</label>");
-            out.println("<input type='text' class='form-control' id='cant_inventario' name='cant_inventario' placeholder='Cantidad en el inventario' required='true'>");
+            out.println("<label>NOMBRE DEL PROVEEDOR</label>");
+            out.println("<input type='text' class='form-control' id='nombrePro' name='nombrePro' placeholder='Nombre del proveedor' required='true'>");
             out.println("</div>");
             out.println("<center><button type='submit' class='btn btn-primary'>CREAR</button></center>");
             out.println("</form>");
-            out.println("");
             out.println("<br>");
             out.println("<br>");
             out.println("<br>");
@@ -118,6 +72,8 @@ public class ct_crear_produc extends HttpServlet {
             out.println("<script src='https://code.jquery.com/jquery-3.3.1.slim.min.js'></script>");
             out.println("<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js'></script>");
             out.println("<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'></script>");
+            out.println("");
+            
             out.println("</body>");
             out.println("</html>");
         }
@@ -150,30 +106,23 @@ public class ct_crear_produc extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        md_producto pro = new md_producto();
+        md_proveedor pro = new md_proveedor();
         
-        pro.setNombre(request.getParameter("name"));
-        pro.setDescripcion(request.getParameter("descripcion"));
-        pro.setCategoria(request.getParameter("categoria"));
-        pro.setProveedor(request.getParameter("proveedor"));
-        pro.setPrecio_unitario(request.getParameter("pre_uni"));
-        pro.setTipo_iva(request.getParameter("tasa_iva"));
-        pro.setCant_inventario(request.getParameter("cant_inventario"));
+        pro.setNit(Integer.parseInt(request.getParameter("nitPro")));
+        pro.setNombre_empresa(request.getParameter("nombrePro"));
         
-        dao_productos daoP = new dao_productos();
-        int respuesta = 99;
+        dao_proveedores dp = new dao_proveedores();
+        int res = 99;
         try {
-            respuesta = daoP.Insertar_datos(pro);
+            res = dp.Insertar_datos(pro);
         } catch (SQLException ex) {
             Logger.getLogger(ct_crear_produc.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (respuesta==1){
-            request.getRequestDispatcher("ct_productos").forward(request, response);
-        }
-        else{
+        if (res == 1){
+            request.getRequestDispatcher("ct_proveedores").forward(request, response);
+        } else {
             System.out.println("no se puede crear el producto");
         }
-        
     }
 
     /**

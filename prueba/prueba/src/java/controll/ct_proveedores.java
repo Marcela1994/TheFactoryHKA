@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controll;
 
-import Model.md_producto;
+import Model.md_proveedor;
+import dao.dao_proveedores;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -19,10 +15,10 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Lenovo
  */
-@WebServlet(name = "ct_productos", urlPatterns = {"/ct_productos"})
-public class ct_productos extends HttpServlet {
+@WebServlet(name = "ct_proveedores", urlPatterns = {"/ct_proveedores"})
+public class ct_proveedores extends HttpServlet {
 
-    ArrayList<md_producto> productos = new ArrayList<>();
+    ArrayList<md_proveedor> prov = new ArrayList<>();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,50 +37,37 @@ public class ct_productos extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<titleProductos</title>");
+            out.println("<title>Proveedores</title>");
             out.println("<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'>");
             out.println("</head>");
             out.println("<body class='container'>");
-            out.println("<h1>PRODUCTOS</h1><BR><br>");
+            out.println("<h1>PROVEEDORES</h1><BR><br>");
             out.println("<table class='table'>");
             out.println("<thead class='thead-dark'>");
             out.println("<tr>");
-            out.println("<th scope='col'>Nombre</th>");
-            out.println("<th scope='col'>Descripción</th>");
-            out.println("<th scope='col'>Categoria</th>");
-            out.println("<th scope='col'>Proveedor</th>");
-            out.println("<th scope='col'>Precio Unitario</th>");
-            out.println("<th scope='col'>Tipo de IVA</th>");
-            out.println("<th scope='col'>Cantidad en Inventario</th>");
-            out.println("<th scope='col'>Modificar</th>");
-            out.println("<th scope='col'>Eliminar</th>");
+            out.println("<th scope='col'>NIT</th>");
+            out.println("<th scope='col'>NOMBRE DE LA EMPRESA</th>");
+            out.println("<th scope='col'>MODIFICAR</th>");
+            out.println("<th scope='col'>ELIMINARR</th>");
             out.println("</tr>");
             out.println("</thead>");
             out.println("<tbody>");
-            dao.dao_productos dp = new dao.dao_productos();
-            productos = dp.MostrarProducto();
-            for (md_producto producto : productos) {
+            dao.dao_proveedores dp = new dao_proveedores();
+            prov = dp.listarProveedores();
+            for (md_proveedor proveedor : prov) {
                 out.println("<tr>");
-                out.println("<form action='ct_control_productos' method='post'>");
-                out.println("<input type='hidden' id='idProducto' name='idProducto' value='" + producto.getId_producto() + "'/>");
-                out.println("<input type='hidden' id='nombreProducto' name='nombreProducto' value='" + producto.getNombre() + "'/>");
-                out.println("<th scope='row'>" + producto.getNombre() + "</th>");
-                out.println("<td>" + producto.getDescripcion() + "</td>");
-                out.println("<td id='categoria' name='categoria' value='" + producto.getCategoria() + "'>" + producto.getCategoria() + "</td>");
-                out.println("<td id='proveedor' name='proveedor' value='" + producto.getProveedor() + "'>" + producto.getProveedor() + "</td>");
-                out.println("<td id='precio' name='precio' value='" + producto.getPrecio_unitario() + "'>" + producto.getPrecio_unitario() + "</td>");
-                out.println("<td id='iva' name='iva' value='" + producto.getTipo_iva() + "'>" + producto.getTipo_iva() + "</td>");
-                out.println("<td id='cantidad' name='cantidad' value='" + producto.getCant_inventario() + "'>" + producto.getCant_inventario() + "</td>");
+                out.println("<form action='ct_cont_proveedor' method='post'>");
+                out.println("<input type='hidden' id='nit' name='nit' value='" + proveedor.getNit() + "'/>");
+                out.println("<input type='hidden' id='nombreProveedor' name='nombreProveedor' value='" + proveedor.getNombre_empresa()+ "'/>");
+                out.println("<th scope='row'>" + proveedor.getNit() + "</th>");
+                out.println("<td>" + proveedor.getNombre_empresa() + "</td>");
                 out.println("<td><button id='accion' name='accion' type='submit' value='modificar' class='btn btn-primary'>MODIFICAR</button></td>");
-                //out.println("<td><a href='seleccion.jsp?prod="+producto.getId_producto()+"' class='btn btn-primary'>MODIFICAR</a></td>");
                 out.println("<td><button id='accion' name='accion' type='submit' value='eliminar' class='btn btn-primary'>ELIMINAR</button></td>");
                 out.println("</form>");
                 out.println("</tr>");
-
             }
-
             out.println("</table>");
-            out.println("<center><a href='crear_produc' class='btn btn-primary'>CREAR NUEVO PRODUCTO</a></center>");
+            out.println("<center><a href='ct_crear_prov' class='btn btn-primary'>CREAR NUEVO PROVEEDOR</a></center>");
             out.println("<br>");
             out.println("<br>");
             out.println("<br>");
@@ -99,6 +82,8 @@ public class ct_productos extends HttpServlet {
             out.println("<script src='https://code.jquery.com/jquery-3.3.1.slim.min.js' ></script>");
             out.println("<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' ></script>");
             out.println("<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' ></script>");
+            
+
             out.println("</body>");
             out.println("</html>");
         }
@@ -131,6 +116,7 @@ public class ct_productos extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+
     }
 
     /**

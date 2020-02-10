@@ -84,4 +84,93 @@ public class dao_productos {
         return listado_productos;
 
     }
+
+    public boolean EliminarProducto(int id) {
+
+        int res = 99;
+        connection conexion = new connection();
+        try {
+            Connection con = conexion.Conectar();
+            String sql = "delete from dbo.producto where id_producto =?;";
+
+            PreparedStatement ps = con.prepareCall(sql);
+            ps.setInt(1, id);
+            res = ps.executeUpdate();
+            System.out.println(res);
+            if (res == 1) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(dao_productos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public md_producto MostrarProductoPorID(int id) {
+        connection conexion = new connection();
+        md_producto busqueda = new md_producto();
+        try {
+            Connection con = conexion.Conectar();
+            String sql = "select p.nombre, p.descripcion, p.categ_pro, p.prov_pro, p.precio_unitario, p.tipo_iva, p.cant_inventario, p.id_producto\n"
+                    + "from dbo.producto p\n"
+                    + "where id_producto = ?;";
+
+            PreparedStatement ps = con.prepareCall(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+
+                busqueda.setNombre(rs.getString(1));
+                busqueda.setDescripcion(rs.getString(2));
+                busqueda.setCategoria(rs.getString(3));
+                busqueda.setProveedor(rs.getString(4));
+                busqueda.setPrecio_unitario(rs.getString(5));
+                busqueda.setTipo_iva(rs.getString(6));
+                busqueda.setCant_inventario(rs.getString(7));
+                busqueda.setId_producto(rs.getInt(8));
+
+            }
+            ps.close();
+
+        } catch (SQLException e) {
+            System.out.println("Error");
+            System.out.println(e.getCause());
+            e.printStackTrace();
+        }
+        return busqueda;
+
+    }
+
+    public boolean ModificarProducto(md_producto productoEliminar) {
+
+        connection conexion = new connection();
+        
+        try {
+            Connection con = conexion.Conectar();
+            String sql = "update producto\n"
+                    + "set cant_inventario=?, nombre =?, descripcion =?,\n"
+                    + "categ_pro =?, tipo_iva =?, prov_pro =?, precio_unitario =?\n"
+                    + "where id_producto=?;";
+
+            PreparedStatement ps = con.prepareCall(sql);
+            ps.setString(1, productoEliminar.getCant_inventario());
+            ps.setString(2, productoEliminar.getNombre());
+            ps.setString(3, productoEliminar.getDescripcion());
+            ps.setInt(4, Integer.parseInt(productoEliminar.getCategoria()));
+            ps.setString(5, productoEliminar.getTipo_iva());
+            ps.setInt(6, Integer.parseInt(productoEliminar.getProveedor()));
+            ps.setString(7, productoEliminar.getPrecio_unitario());
+            ps.setInt(8, productoEliminar.getId_producto());
+            int res = ps.executeUpdate();
+            if(res==1){
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al actualizar el producto");
+            System.out.println(e.getCause());
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

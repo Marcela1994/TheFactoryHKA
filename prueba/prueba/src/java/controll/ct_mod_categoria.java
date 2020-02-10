@@ -5,9 +5,12 @@
  */
 package controll;
 
-
-import dao.dao_user;
+import Model.md_categoria;
+import Model.md_proveedor;
+import dao.dao_categorias;
+import dao.dao_proveedores;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,10 +21,9 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Lenovo
  */
-@WebServlet(name = "ct_validacion_login", urlPatterns = {"/ct_validacion_login"})
-public class ct_validacion_login extends HttpServlet {
+@WebServlet(name = "ct_mod_categoria", urlPatterns = {"/ct_mod_categoria"})
+public class ct_mod_categoria extends HttpServlet {
 
-    boolean usuario;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -33,7 +35,6 @@ public class ct_validacion_login extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
         
     }
 
@@ -63,16 +64,43 @@ public class ct_validacion_login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        processRequest(request, response);
         
-        
-        String user = request.getParameter("user");
-        String pass = request.getParameter("pass");
-        dao.dao_user du = new dao_user();
-        usuario = du.ValidarUser(user, pass);
-        if(usuario){
-            request.getRequestDispatcher("seleccion.jsp").forward(request, response);
-        }else{
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+        md_categoria mc = new md_categoria();
+        int id = Integer.parseInt(request.getParameter("idCategoria"));
+        mc.setId_categoria(id);
+        mc.setCategoria(request.getParameter("nombre"));
+
+        dao_categorias dc = new dao_categorias();
+        boolean respuesta;
+        respuesta = dc.modificarCategoria(mc);
+
+        try (PrintWriter out = response.getWriter()) {
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Modificar Categoria</title>");
+            out.println("</head>");
+            out.println("<body>");
+            if (respuesta == true) {
+                request.getRequestDispatcher("ct_categoria").forward(request, response);
+            } else {
+                out.println("<h1>No fue posible actualizar la categoria nro " + id + "</h1>");
+                out.println("<br>");
+                out.println("<br>");
+                out.println("<br>");
+                out.println("<br>");
+                out.println("<hr>");
+                out.println("<br>");
+                out.println("<br>");
+                out.println("<br>");
+                out.println("<a href='seleccion.jsp' class='btn btn-secondary btn-lg btn-block'>VOLVER</a>");
+                out.println("<br>");
+                out.println("<br>");
+            }
+
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 

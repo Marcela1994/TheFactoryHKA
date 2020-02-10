@@ -5,7 +5,8 @@
  */
 package controll;
 
-import Model.md_producto;
+import Model.md_categoria;
+import dao.dao_categorias;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -19,11 +20,10 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Lenovo
  */
-@WebServlet(name = "ct_productos", urlPatterns = {"/ct_productos"})
-public class ct_productos extends HttpServlet {
+@WebServlet(name = "ct_categoria", urlPatterns = {"/ct_categoria"})
+public class ct_categoria extends HttpServlet {
 
-    ArrayList<md_producto> productos = new ArrayList<>();
-
+    ArrayList<md_categoria> cat = new ArrayList<>();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,50 +41,37 @@ public class ct_productos extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<titleProductos</title>");
+            out.println("<title>Categoria</title>");
             out.println("<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'>");
             out.println("</head>");
             out.println("<body class='container'>");
-            out.println("<h1>PRODUCTOS</h1><BR><br>");
+            out.println("<h1>CATEGORIAS</h1>");
             out.println("<table class='table'>");
             out.println("<thead class='thead-dark'>");
             out.println("<tr>");
-            out.println("<th scope='col'>Nombre</th>");
-            out.println("<th scope='col'>Descripción</th>");
-            out.println("<th scope='col'>Categoria</th>");
-            out.println("<th scope='col'>Proveedor</th>");
-            out.println("<th scope='col'>Precio Unitario</th>");
-            out.println("<th scope='col'>Tipo de IVA</th>");
-            out.println("<th scope='col'>Cantidad en Inventario</th>");
-            out.println("<th scope='col'>Modificar</th>");
-            out.println("<th scope='col'>Eliminar</th>");
+            out.println("<th scope='col'>ID CATEGORIA</th>");
+            out.println("<th scope='col'>NOMBRE DE LA CATEGORIA</th>");
+            out.println("<th scope='col'>MODIFICAR</th>");
+            out.println("<th scope='col'>ELIMINARR</th>");
             out.println("</tr>");
             out.println("</thead>");
             out.println("<tbody>");
-            dao.dao_productos dp = new dao.dao_productos();
-            productos = dp.MostrarProducto();
-            for (md_producto producto : productos) {
+            dao_categorias dc = new dao_categorias();
+            cat = dc.listarCategorias();
+            for (md_categoria categ : cat){
                 out.println("<tr>");
-                out.println("<form action='ct_control_productos' method='post'>");
-                out.println("<input type='hidden' id='idProducto' name='idProducto' value='" + producto.getId_producto() + "'/>");
-                out.println("<input type='hidden' id='nombreProducto' name='nombreProducto' value='" + producto.getNombre() + "'/>");
-                out.println("<th scope='row'>" + producto.getNombre() + "</th>");
-                out.println("<td>" + producto.getDescripcion() + "</td>");
-                out.println("<td id='categoria' name='categoria' value='" + producto.getCategoria() + "'>" + producto.getCategoria() + "</td>");
-                out.println("<td id='proveedor' name='proveedor' value='" + producto.getProveedor() + "'>" + producto.getProveedor() + "</td>");
-                out.println("<td id='precio' name='precio' value='" + producto.getPrecio_unitario() + "'>" + producto.getPrecio_unitario() + "</td>");
-                out.println("<td id='iva' name='iva' value='" + producto.getTipo_iva() + "'>" + producto.getTipo_iva() + "</td>");
-                out.println("<td id='cantidad' name='cantidad' value='" + producto.getCant_inventario() + "'>" + producto.getCant_inventario() + "</td>");
+                out.println("<form action='ct_cont_categoria' method='post'>");
+                out.println("<input type='hidden' id='idcat' name='idcat' value='" + categ.getId_categoria() + "'/>");
+                out.println("<input type='hidden' id='categoria' name='categoria' value='" + categ.getCategoria()+ "'/>");
+                out.println("<th scope='row'>" + categ.getId_categoria() + "</th>");
+                out.println("<td>" + categ.getCategoria() + "</td>");
                 out.println("<td><button id='accion' name='accion' type='submit' value='modificar' class='btn btn-primary'>MODIFICAR</button></td>");
-                //out.println("<td><a href='seleccion.jsp?prod="+producto.getId_producto()+"' class='btn btn-primary'>MODIFICAR</a></td>");
                 out.println("<td><button id='accion' name='accion' type='submit' value='eliminar' class='btn btn-primary'>ELIMINAR</button></td>");
                 out.println("</form>");
                 out.println("</tr>");
-
             }
-
             out.println("</table>");
-            out.println("<center><a href='crear_produc' class='btn btn-primary'>CREAR NUEVO PRODUCTO</a></center>");
+            out.println("<center><a href='ct_crear_categoria' class='btn btn-primary'>CREAR NUEVA CATEGORIA</a></center>");
             out.println("<br>");
             out.println("<br>");
             out.println("<br>");
@@ -100,7 +87,7 @@ public class ct_productos extends HttpServlet {
             out.println("<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' ></script>");
             out.println("<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' ></script>");
             out.println("</body>");
-            out.println("</html>");
+            out.println("</html>");        
         }
     }
 

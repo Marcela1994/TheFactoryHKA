@@ -37,7 +37,17 @@
                 </div>
             <center><button type="submit" class="btn btn-primary">CREAR USUARIO</button></center>
         </form>
-        
+        <br>
+        <br>
+        <br>
+        <br>
+        <hr>
+        <br>
+        <br>
+        <br>
+        <a href='seleccion.jsp' class='btn btn-secondary btn-lg btn-block'>VOLVER</a>
+        <br>
+        <br>
         
             <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

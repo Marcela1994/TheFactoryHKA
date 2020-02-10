@@ -25,7 +25,7 @@
         <br>
         <div class="card-deck">
             <div class="card">
-                <form action="">
+                <form action="ct_proveedores">
                     <div class="card-body">
                         <center>
                             <h5 class="card-title">Proveedor</h5>
@@ -36,7 +36,7 @@
                 </form>
             </div>
             <div class="card">
-                <form action="">
+                <form action="ct_categoria">
                     <div class="card-body">
                         <center>
                             <h5 class="card-title">Categoria</h5>
